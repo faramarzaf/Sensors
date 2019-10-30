@@ -8,6 +8,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 public class ProximityActivity extends AppCompatActivity implements SensorEventListener {
@@ -24,7 +25,10 @@ public class ProximityActivity extends AppCompatActivity implements SensorEventL
         txtProximity = findViewById(R.id.txtProximity);
         initSensors();
         checkSensorIsAvailable();
-
+        if (proximitySensor == null) {
+            Log.e("TAG", "Proximity sensor not available.");
+            finish(); // Close app
+        }
 
     }
 
@@ -42,10 +46,8 @@ public class ProximityActivity extends AppCompatActivity implements SensorEventL
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        if (currentSensor == Sensor.TYPE_PROXIMITY) {
-            float distance = event.values[0];
-            txtProximity.setText("Proximity " + distance);
-        }
+        float distance = event.values[0];
+        txtProximity.setText("Proximity " + distance);
 
     }
 
@@ -57,15 +59,17 @@ public class ProximityActivity extends AppCompatActivity implements SensorEventL
 
     @Override
     protected void onResume() {
+        sensorManager.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
+
         super.onResume();
     }
 
 
     @Override
     protected void onPause() {
+        sensorManager.unregisterListener(this);
         super.onPause();
     }
-
 
 
 }

@@ -8,6 +8,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -22,15 +23,18 @@ public class GyroscopeActivity extends AppCompatActivity implements SensorEventL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gyroscope);
         txtGyroscope = findViewById(R.id.txtGyroscope);
-
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         gyroscopeSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
 
         if (gyroscopeSensor == null) {
+            Log.e("TAG", "gyroscope sensor not available.");
             finish();
         }
-
-
+        if (checkSensorAvailability(Sensor.TYPE_GYROSCOPE)) {
+            currentSensor = Sensor.TYPE_GYROSCOPE;
+        } else {
+            txtGyroscope.setText("Gyroscope Sensor not available");
+        }
     }
 
     public boolean checkSensorAvailability(int sensorType) {
@@ -44,26 +48,18 @@ public class GyroscopeActivity extends AppCompatActivity implements SensorEventL
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        if (currentSensor == Sensor.TYPE_GYROSCOPE) {
-            if (event.values[2] > 0.5f) {
-                txtGyroscope.setText("Anti Clock");
-            } else if (event.values[2] < -0.5f) {
-                txtGyroscope.setText("Clock");
-            }
+
+        if (event.values[2] > 0.5f) {
+            txtGyroscope.setText("Anti Clock");
+        } else if (event.values[2] < -0.5f) {
+            txtGyroscope.setText("Clock");
         }
     }
+
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
-    }
-
-    public void gyroscopeSensorOnClick(View view) {
-        if (checkSensorAvailability(Sensor.TYPE_GYROSCOPE)) {
-            currentSensor = Sensor.TYPE_GYROSCOPE;
-        } else {
-            txtGyroscope.setText("Gyroscope Sensor not available");
-        }
     }
 
 

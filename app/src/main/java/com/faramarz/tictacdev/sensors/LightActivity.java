@@ -3,6 +3,7 @@ package com.faramarz.tictacdev.sensors;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -10,12 +11,16 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class LightActivity extends AppCompatActivity implements SensorEventListener {
+public class LightActivity extends AppCompatActivity {
     Sensor lightSensor;
     SensorManager sensorManager;
     int currentSensor;
     TextView txtLight;
+
+
+    SensorEventListener listener;
 
 
     @Override
@@ -25,12 +30,31 @@ public class LightActivity extends AppCompatActivity implements SensorEventListe
         txtLight = findViewById(R.id.txtLight);
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
-
         if (lightSensor == null) {
             finish();
         }
 
+        listener = new SensorEventListener() {
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int accuracy) {
+                //  Toast.makeText(LightActivity.this, "accuracy changed!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSensorChanged(SensorEvent event) {
+                txtLight.setText(String.valueOf(event.values[0]));
+                int grayShade = (int) event.values[0];
+                if (grayShade > 255) grayShade = 255;
+
+                txtLight.setTextColor(Color.rgb(255 - grayShade, 255 - grayShade, 255 - grayShade));
+                txtLight.setBackgroundColor(Color.rgb(grayShade, grayShade, grayShade));
+            }
+        };
+
+        sensorManager.registerListener(listener, lightSensor, SensorManager.SENSOR_DELAY_FASTEST);
     }
+
 
     public boolean checkSensorAvailability(int sensorType) {
         boolean isSensor = false;
@@ -38,22 +62,6 @@ public class LightActivity extends AppCompatActivity implements SensorEventListe
             isSensor = true;
         }
         return isSensor;
-    }
-
-
-    @Override
-    public void onSensorChanged(SensorEvent event) {
-        if (event.sensor.getType() == currentSensor) {
-            if (currentSensor == Sensor.TYPE_LIGHT) {
-                float valueZ = event.values[0];
-                txtLight.setText("Brightness " + valueZ);
-            }
-        }
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
     }
 
 
@@ -66,18 +74,17 @@ public class LightActivity extends AppCompatActivity implements SensorEventListe
     }
 
 
-
     @Override
     protected void onPause() {
         super.onPause();
-        sensorManager.unregisterListener(this);
+        sensorManager.unregisterListener(listener, lightSensor);
     }
 
 
     @Override
     protected void onResume() {
         super.onResume();
-        sensorManager.registerListener(this, lightSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(listener, lightSensor, SensorManager.SENSOR_DELAY_FASTEST);
     }
 
 

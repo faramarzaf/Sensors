@@ -20,13 +20,15 @@ import com.faramarz.tictacdev.sensors.temp_sensor.TempActivity;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener, View.OnClickListener {
 
-    private TextView textView;
-    Button accelerometerPage, ballSensor, rotatePage, gpsPage, stepCounterPage, btnTempSensor, btnProximity, btnLightSensor;
+    TextView textView;
+    Button accelerometerPage, ballSensor, rotatePage, gpsPage, stepCounterPage, btnTempSensor, btnProximity, btnLightSensor, btnGyro;
     private SensorManager sensorManager;
+    Sensor accelerometerSensor, gyroscopeSensor;
     private int currentSensor;
     private long lastUpdate = 0;
     private float last_x, last_y, last_z;
-    private static final int SHAKE_THRESHOLD = 600;
+    private static final int SHAKE_THRESHOLD =600;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +42,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     private void initSensors() {
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-
+        accelerometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        gyroscopeSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
     }
 
     private void checkSensorIsAvailable() {
 
-}
+    }
 
     private void bind() {
         textView = findViewById(R.id.tvResult);
@@ -57,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         stepCounterPage = findViewById(R.id.stepCounterPage);
         btnProximity = findViewById(R.id.btnProximity);
         btnLightSensor = findViewById(R.id.btnLightSensor);
+        btnGyro = findViewById(R.id.btnGyro);
     }
 
     private void clickEvents() {
@@ -68,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         btnTempSensor.setOnClickListener(this);
         btnProximity.setOnClickListener(this);
         btnLightSensor.setOnClickListener(this);
-
+        btnGyro.setOnClickListener(this);
     }
 
 
@@ -82,13 +86,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
 
     public void onSensorChanged(SensorEvent event) {
-        float x = event.values[0];
-        float y = event.values[1];
-        float z = event.values[2];
-        long curTime = System.currentTimeMillis();
-      /*  if (event.sensor.getType() == currentSensor) {
+
+
+        if (event.sensor.getType() == currentSensor) {
             if (currentSensor == Sensor.TYPE_ACCELEROMETER) {
+                float x = event.values[0];
+                float y = event.values[1];
+                float z = event.values[2];
+                long curTime = System.currentTimeMillis();
                 if ((curTime - lastUpdate) > 100) {
+
                     long diffTime = (curTime - lastUpdate);
                     lastUpdate = curTime;
                     float speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
@@ -101,33 +108,22 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     last_z = z;
                 }
 
-            } else if (currentSensor == Sensor.TYPE_GYROSCOPE) {
-                if (event.values[2] > 0.5f) {
-                    textView.setText("Anti Clock");
-                } else if (event.values[2] < -0.5f) {
-                    textView.setText("Clock");
-                }
             }
 
-        }*/
+        }
 
     }
 
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
     }
 
-    public void gyroscopeSensorOnClick(View view) {
-        if (checkSensorAvailability(Sensor.TYPE_GYROSCOPE)) {
-            currentSensor = Sensor.TYPE_GYROSCOPE;
-        } else {
-            textView.setText("Gyroscope Sensor not available");
-        }
-    }
-
 
     @Override
     protected void onResume() {
         super.onResume();
+        sensorManager.registerListener(this, accelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(this, gyroscopeSensor, SensorManager.SENSOR_DELAY_NORMAL);
+
     }
 
     @Override
@@ -173,6 +169,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             case R.id.btnLightSensor:
                 startActivity(new Intent(this, LightActivity.class));
                 break;
+
+            case R.id.btnGyro:
+                startActivity(new Intent(this, GyroscopeActivity.class));
+                break;
+
         }
 
 

@@ -15,6 +15,7 @@
     <uses-feature
         android:name="android.hardware.accelerometer"
         android:required="true" />
+    <uses-feature android:name="android.hardware.sensor.light"/>
 
     <application
         android:allowBackup="true"
@@ -27,7 +28,6 @@
         <activity android:name=".GyroscopeActivity"></activity>
         <activity android:name=".LightActivity" />
         <activity android:name=".ProximityActivity" />
-        <activity android:name=".proximity.ProximityActivity" />
         <activity android:name=".temp_sensor.TempActivity" />
         <activity android:name=".step_count.StepCounterActivity" />
         <activity android:name=".gps.GPSActivity" />

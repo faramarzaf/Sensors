@@ -95,7 +95,7 @@
                     android:id="@+id/btnGyro"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="gyroscopeSensorOnClick"
+
                     android:text="Gyroscope" />
 
 
@@ -112,7 +112,6 @@
                     android:id="@+id/btnLightSensor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="lightSensorOnClick"
                     android:text="Light" />
 
 

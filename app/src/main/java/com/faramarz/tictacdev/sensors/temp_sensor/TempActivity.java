@@ -13,7 +13,9 @@ import com.faramarz.tictacdev.sensors.R;
 
 public class TempActivity extends AppCompatActivity {
 
-    TextView tempAvailable, tempReading,ambientAvailable,ambientReading;
+    TextView tempAvailable, tempReading, ambientAvailable, ambientReading;
+    Sensor temp;
+    SensorManager sensorManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,5 +83,12 @@ public class TempActivity extends AppCompatActivity {
         }
 
     };
+
+    @Override
+    protected void onResume() {
+
+        super.onResume();
+    }
+
 
 }
