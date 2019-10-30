@@ -21,7 +21,7 @@ import com.faramarz.tictacdev.sensors.temp_sensor.TempActivity;
 public class MainActivity extends AppCompatActivity implements SensorEventListener, View.OnClickListener {
 
     TextView textView;
-    Button accelerometerPage, ballSensor, rotatePage, gpsPage, stepCounterPage, btnTempSensor, btnProximity, btnLightSensor, btnGyro;
+    Button accelerometerPage, ballSensor, rotatePage, gpsPage, stepCounterPage, btnTempSensor, btnProximity, btnLightSensor, btnGyro,btnShock;
     private SensorManager sensorManager;
     Sensor accelerometerSensor, gyroscopeSensor;
     private int currentSensor;
@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         btnProximity = findViewById(R.id.btnProximity);
         btnLightSensor = findViewById(R.id.btnLightSensor);
         btnGyro = findViewById(R.id.btnGyro);
+        btnShock= findViewById(R.id.btnShock);
     }
 
     private void clickEvents() {
@@ -73,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         btnProximity.setOnClickListener(this);
         btnLightSensor.setOnClickListener(this);
         btnGyro.setOnClickListener(this);
+        btnShock.setOnClickListener(this);
     }
 
 
@@ -174,6 +176,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 startActivity(new Intent(this, GyroscopeActivity.class));
                 break;
 
+            case R.id.btnShock:
+                startActivity(new Intent(this, ShockActivity.class));
+                break;
         }
 
 
