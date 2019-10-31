@@ -10,10 +10,8 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.widget.Toast;
 
-public class ShockActivity extends AppCompatActivity implements SensorEventListener {
+public class ShakeActivity extends AppCompatActivity implements SensorEventListener {
 
-
-      final String TAG = MainActivity.class.getSimpleName();
       SensorManager mSensorManager;
       Sensor mAccelerometer;
       long lastTime = 0;
@@ -25,12 +23,9 @@ public class ShockActivity extends AppCompatActivity implements SensorEventListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shock);
-
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
-
-
 
     }
 

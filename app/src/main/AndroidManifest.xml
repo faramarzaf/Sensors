@@ -25,7 +25,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ShockActivity"></activity>
+        <activity android:name=".ShakeActivity"></activity>
         <activity android:name=".GyroscopeActivity" />
         <activity android:name=".LightActivity" />
         <activity android:name=".ProximityActivity" />

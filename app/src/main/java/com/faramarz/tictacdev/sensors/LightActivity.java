@@ -18,8 +18,6 @@ public class LightActivity extends AppCompatActivity {
     SensorManager sensorManager;
     int currentSensor;
     TextView txtLight;
-
-
     SensorEventListener listener;
 
 
@@ -35,7 +33,6 @@ public class LightActivity extends AppCompatActivity {
         }
 
         listener = new SensorEventListener() {
-
             @Override
             public void onAccuracyChanged(Sensor sensor, int accuracy) {
                 //  Toast.makeText(LightActivity.this, "accuracy changed!", Toast.LENGTH_SHORT).show();

@@ -16,7 +16,7 @@ public class ProximityActivity extends AppCompatActivity implements SensorEventL
     TextView txtProximity;
     SensorManager sensorManager;
     Sensor proximitySensor;
-    int currentSensor;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

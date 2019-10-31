@@ -2,32 +2,22 @@ package com.faramarz.tictacdev.sensors;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
+
 import android.content.Intent;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.faramarz.tictacdev.sensors.gps.GPSActivity;
 import com.faramarz.tictacdev.sensors.step_count.StepCounterActivity;
 import com.faramarz.tictacdev.sensors.temp_sensor.TempActivity;
 
-public class MainActivity extends AppCompatActivity implements SensorEventListener, View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     TextView textView;
-    Button accelerometerPage, ballSensor, rotatePage, gpsPage, stepCounterPage, btnTempSensor, btnProximity, btnLightSensor, btnGyro,btnShock;
-    private SensorManager sensorManager;
-    Sensor accelerometerSensor, gyroscopeSensor;
-    private int currentSensor;
-    private long lastUpdate = 0;
-    private float last_x, last_y, last_z;
-    private static final int SHAKE_THRESHOLD =600;
+    Button accelerometerPage, ballSensor, rotatePage, gpsPage, stepCounterPage, btnTempSensor, btnProximity, btnLightSensor, btnGyro, btnShock;
 
 
     @Override
@@ -36,19 +26,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         setContentView(R.layout.activity_main);
         bind();
         clickEvents();
-        initSensors();
-        checkSensorIsAvailable();
-    }
-
-    private void initSensors() {
-        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        accelerometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        gyroscopeSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
-    }
-
-    private void checkSensorIsAvailable() {
 
     }
+
 
     private void bind() {
         textView = findViewById(R.id.tvResult);
@@ -61,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         btnProximity = findViewById(R.id.btnProximity);
         btnLightSensor = findViewById(R.id.btnLightSensor);
         btnGyro = findViewById(R.id.btnGyro);
-        btnShock= findViewById(R.id.btnShock);
+        btnShock = findViewById(R.id.btnShock);
     }
 
     private void clickEvents() {
@@ -77,62 +57,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         btnShock.setOnClickListener(this);
     }
 
-
-    public boolean checkSensorAvailability(int sensorType) {
-        boolean isSensor = false;
-        if (sensorManager.getDefaultSensor(sensorType) != null) {
-            isSensor = true;
-        }
-        return isSensor;
-    }
-
-
-    public void onSensorChanged(SensorEvent event) {
-
-
-        if (event.sensor.getType() == currentSensor) {
-            if (currentSensor == Sensor.TYPE_ACCELEROMETER) {
-                float x = event.values[0];
-                float y = event.values[1];
-                float z = event.values[2];
-                long curTime = System.currentTimeMillis();
-                if ((curTime - lastUpdate) > 100) {
-
-                    long diffTime = (curTime - lastUpdate);
-                    lastUpdate = curTime;
-                    float speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
-                    if (speed > SHAKE_THRESHOLD) {
-                        Toast.makeText(getApplicationContext(), "Your phone just shook", Toast.LENGTH_LONG).show();
-                    }
-
-                    last_x = x;
-                    last_y = y;
-                    last_z = z;
-                }
-
-            }
-
-        }
-
-    }
-
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        sensorManager.registerListener(this, accelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
-        sensorManager.registerListener(this, gyroscopeSensor, SensorManager.SENSOR_DELAY_NORMAL);
-
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        sensorManager.unregisterListener(this);
-    }
 
     @Override
     public void onClick(View v) {
@@ -177,10 +101,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 break;
 
             case R.id.btnShock:
-                startActivity(new Intent(this, ShockActivity.class));
+                startActivity(new Intent(this, ShakeActivity.class));
                 break;
         }
-
-
     }
+
 }
