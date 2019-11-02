@@ -16,8 +16,7 @@ import com.faramarz.tictacdev.sensors.temp_sensor.TempActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    TextView textView;
-    Button accelerometerPage, ballSensor, rotatePage, gpsPage, stepCounterPage, btnTempSensor, btnProximity, btnLightSensor, btnGyro, btnShock;
+    Button accelerometerPage, ballSensor, rotatePage, gpsPage, stepCounterPage, btnTempSensor, btnProximity, btnLightSensor, btnGyro, btnShock,btnStepCounterSensor;
 
 
     @Override
@@ -31,7 +30,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private void bind() {
-        textView = findViewById(R.id.tvResult);
         accelerometerPage = findViewById(R.id.accelerometerPage);
         ballSensor = findViewById(R.id.ballSensor);
         rotatePage = findViewById(R.id.rotatePage);
@@ -42,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnLightSensor = findViewById(R.id.btnLightSensor);
         btnGyro = findViewById(R.id.btnGyro);
         btnShock = findViewById(R.id.btnShock);
+        btnStepCounterSensor = findViewById(R.id.btnStepCounterSensor);
     }
 
     private void clickEvents() {
@@ -55,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnLightSensor.setOnClickListener(this);
         btnGyro.setOnClickListener(this);
         btnShock.setOnClickListener(this);
+        btnStepCounterSensor.setOnClickListener(this);
     }
 
 
@@ -102,6 +102,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.btnShock:
                 startActivity(new Intent(this, ShakeActivity.class));
+                break;
+
+            case R.id.btnStepCounterSensor:
+                startActivity(new Intent(this, StepCounterSensor.class));
                 break;
         }
     }
